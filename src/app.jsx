@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 const faqs = [
   {
     id: crypto.randomUUID(),
@@ -16,21 +18,42 @@ const faqs = [
   },
 ]
 
-const Item = ({ title, answer, index }) => (
-  <li className="item">
-    <p className="number">{index + 1}</p>
-    <h3 className="title">{title}</h3>
-    <span className="icon">-</span>
-    <p className="content-box">{answer} </p>
-  </li>
-)
+const Item = ({ title, answer, index, onClickItem, activeIndex }) => {
+  const active = index === activeIndex
 
-const App = () => (
-  <ul className="accordion">
-    {faqs.map(({ id, title, answer }, index) => (
-      <Item key={id} title={title} answer={answer} index={index} />
-    ))}
-  </ul>
-)
+  return (
+    <li
+      className={`item ${active ? "active" : ""}`}
+      onClick={() => onClickItem(index)}
+    >
+      <p className="number">{index + 1}</p>
+      <h2 className="title">{title}</h2>
+      <p className="icon">{active ? "-" : "+"}</p>
+      {active && <div className="content-box">{answer}</div>}
+    </li>
+  )
+}
+
+const App = () => {
+  const [activeIndex, setActiveIndex] = useState(null)
+
+  const handleClick = (index) =>
+    setActiveIndex((activeIndex) => (activeIndex === index ? null : index))
+
+  return (
+    <ul className="accordion">
+      {faqs.map(({ id, title, answer }, index) => (
+        <Item
+          key={id}
+          title={title}
+          answer={answer}
+          index={index}
+          onClickItem={handleClick}
+          activeIndex={activeIndex}
+        />
+      ))}
+    </ul>
+  )
+}
 
 export { App }

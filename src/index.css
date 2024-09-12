@@ -49,3 +49,12 @@ body {
   padding-bottom: 16px;
   line-height: 1.6;
 }
+
+.item.active {
+  border-top: 4px solid pink;
+}
+
+.item.active .number,
+.item.active .title {
+  color: pink;
+}
